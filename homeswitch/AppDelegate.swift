@@ -16,6 +16,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        //Load custom server data
+        var firstStart = true
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if let serverAddr = defaults.stringForKey("homeswitchServerAddr") {
+            ServerGlobal.ServerConnection.serverAddrBaseUrl = serverAddr
+            firstStart = false
+        }
+        if let serverPW = defaults.stringForKey("homeswitchSPW") {
+            ServerGlobal.ServerConnection.serverPassword = serverPW
+        }
+        
+        if firstStart {
+                //GOTO Welcome Screen
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            if let resultController =  storyboard.instantiateViewControllerWithIdentifier("WelcomeVC") as? UINavigationController {
+                self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+                self.window?.rootViewController = resultController
+                self.window?.makeKeyAndVisible()
+            }
+        }
+        
+        if ServerGlobal.ServerConnection.testConnection(ServerGlobal.ServerConnection.serverPassword, newUrl: ServerGlobal.ServerConnection.serverAddrBaseUrl) {
+                //GOTO Error Screen
+        }
+        
+        
         return true
     }
 
