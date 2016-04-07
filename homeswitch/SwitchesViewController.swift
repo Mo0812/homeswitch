@@ -10,17 +10,24 @@ import UIKit
 
 class SwitchesViewController: UIViewController {
     
-    var switches: [HSSwitch]?
+    var switches: [HSSwitch]? {
+        didSet {
+            self.switchTable.reloadData()
+        }
+    }
 
     @IBOutlet weak var switchTable: UITableView!
+    @IBOutlet weak var loadingActivity: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         switchTable.dataSource = self
         switchTable.delegate = self
-        
+                
         switches = HSSwitch.loadSwitches()
+        
+        loadingActivity.alpha = 0
         
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -65,7 +72,20 @@ class SwitchesViewController: UIViewController {
     
     @IBAction func saveToSwitchesView(segue: UIStoryboardSegue) {
         if let switchAddController = segue.sourceViewController as? SwitchesAddTableViewController {
-            print(switchAddController.switchName.text)
+            let sw_name = switchAddController.switchName.text!
+            let sw_sc = switchAddController.switchSystemCode.text!
+            let sw_uc = switchAddController.switchUnitCode.text!
+            
+            let urlStr = ServerGlobal.ServerConnection.serverAddrBaseUrl + "/addSwitch.php?sw_name=" + sw_name + "&sw_label=" + "5" + "&sw_sc=" + sw_sc + "&sw_uc=" + sw_uc
+            let url = NSURL(string: urlStr)
+            let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {
+                (data, response, error) in
+                
+
+                self.switches = HSSwitch.loadSwitches()
+            }
+            task.resume()
+
         }
             
     }
@@ -122,5 +142,6 @@ extension SwitchesViewController: UITableViewDataSource, UITableViewDelegate {
         
         return [swOff, swOn]
     }
+
     
 }

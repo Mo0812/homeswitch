@@ -104,6 +104,20 @@
                                     <constraint firstAttribute="trailing" secondItem="mQW-cd-XId" secondAttribute="trailing" constant="16" id="lyW-KJ-kPG"/>
                                 </constraints>
                             </view>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="mJ2-R7-aEd">
+                                <rect key="frame" x="290" y="290" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="3NS-Ok-A2Q"/>
+                                    <constraint firstAttribute="height" constant="100" id="x0u-Yv-hxf"/>
+                                </constraints>
+                                <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="3NS-Ok-A2Q"/>
+                                        <exclude reference="x0u-Yv-hxf"/>
+                                    </mask>
+                                </variation>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -115,6 +129,8 @@
                             <constraint firstItem="mFj-vA-GnZ" firstAttribute="top" secondItem="Ia1-K6-d13" secondAttribute="bottom" id="ax7-T2-Vi9"/>
                             <constraint firstItem="BSV-af-kHk" firstAttribute="top" secondItem="mFj-vA-GnZ" secondAttribute="bottom" constant="-4" id="bFf-fT-bi5"/>
                             <constraint firstItem="BSV-af-kHk" firstAttribute="leading" secondItem="tsR-hK-woN" secondAttribute="leadingMargin" constant="-20" id="dt5-YO-NkO"/>
+                            <constraint firstItem="mJ2-R7-aEd" firstAttribute="centerX" secondItem="tsR-hK-woN" secondAttribute="centerX" id="hpn-zr-13X"/>
+                            <constraint firstItem="mJ2-R7-aEd" firstAttribute="centerY" secondItem="tsR-hK-woN" secondAttribute="centerY" id="ndL-qY-SdF"/>
                             <constraint firstAttribute="trailingMargin" secondItem="BSV-af-kHk" secondAttribute="trailing" constant="-20" id="syD-EX-9ch"/>
                         </constraints>
                         <variation key="default">
@@ -127,7 +143,6 @@
                         <barButtonItem title="Item" id="pDA-W8-M03"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Meine Schalter" id="bh1-Mv-JZQ">
-                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="x7X-A1-kd9"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="zzO-Gc-BoK">
                             <connections>
                                 <segue destination="Lu4-1N-yu0" kind="presentation" id="Dyu-QW-vMz"/>
@@ -136,6 +151,7 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="loadingActivity" destination="mJ2-R7-aEd" id="yjV-Db-FFw"/>
                         <outlet property="switchTable" destination="BSV-af-kHk" id="10O-jB-ALj"/>
                     </connections>
                 </viewController>
@@ -240,7 +256,7 @@
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Systemcode" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fVz-vg-Kv1">
                                                     <rect key="frame" x="8" y="8" width="584" height="53"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -267,7 +283,7 @@
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Unitcode" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0bX-Qz-XdX">
                                                     <rect key="frame" x="8" y="8" width="584" height="53"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -310,7 +326,7 @@
             </objects>
             <point key="canvasLocation" x="3106" y="-320"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Schaltertyp wählen-->
         <scene sceneID="Hdv-TM-ufe">
             <objects>
                 <tableViewController id="0oh-7d-dKx" sceneMemberID="viewController">
@@ -333,7 +349,9 @@
                             <outlet property="delegate" destination="0oh-7d-dKx" id="5iR-q0-gzD"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="M0Z-iE-nLs"/>
+                    <navigationItem key="navigationItem" title="Schaltertyp wählen" id="M0Z-iE-nLs">
+                        <barButtonItem key="leftBarButtonItem" title="Zurück" id="yI7-kp-wDg"/>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8el-SW-3fG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
