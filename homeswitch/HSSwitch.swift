@@ -49,61 +49,62 @@ class HSSwitch {
     }
     
     static func loadSwitches() -> [HSSwitch]? {
-        let urlString = "http://here-server.local/html/homeswitch" + "/getSwitches.php"
+        var arr = [HSSwitch]()
+        
+        let urlString = ServerGlobal.ServerConnection.serverAddrBaseUrl + "/getSwitches.php"
         let escapedUrlString = urlString.stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet())
         
         let url = NSURL(string: escapedUrlString!)
-        let data = NSData(contentsOfURL: url!)
+        if let data = NSData(contentsOfURL: url!) {
         
-        var arr = [HSSwitch]()
         
-        do {
-            let json = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
-            
-            if let switches = json as? NSArray {
-                for switchR in switches {
-                    var rID: Int = 0
-                    var rName: String = ""
-                    var rType: Int = 0
-                    var rTName: String = ""
-                    var rIcon: String = ""
-                    var rSC: String = ""
-                    var rUC: Int = 0
-                    
-                    if let id = switchR["id"] as? String {
-                        rID = Int(id)!
-                    }
-                    if let name = switchR["label"] as? String {
-                        rName = name
-                    }
-                    if let type = switchR["type"] as? String {
-                        rType = Int(type)!
-                    }
-                    if let tname = switchR["typename"] as? String {
-                        rTName = tname
-                    }
-                    if let icon = switchR["icon"] as? String {
-                        rIcon = icon
-                    }
-                    if let sc = switchR["systemcode"] as? String {
-                        rSC = sc
-                    }
-                    if let uc = switchR["unitcode"] as? String {
-                        rUC = Int(uc)!
-                    }
-                    
-                    
-                    let hssw = HSSwitch(id: rID, name: rName, type: rType, typename: rTName, icon: rIcon, systemcode: rSC, unitcode: rUC)
-                    
-                    arr.append(hssw)
-                }
+            do {
+                let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
                 
-                return arr
+                if let switches = json as? NSArray {
+                    for switchR in switches {
+                        var rID: Int = 0
+                        var rName: String = ""
+                        var rType: Int = 0
+                        var rTName: String = ""
+                        var rIcon: String = ""
+                        var rSC: String = ""
+                        var rUC: Int = 0
+                        
+                        if let id = switchR["id"] as? String {
+                            rID = Int(id)!
+                        }
+                        if let name = switchR["label"] as? String {
+                            rName = name
+                        }
+                        if let type = switchR["type"] as? String {
+                            rType = Int(type)!
+                        }
+                        if let tname = switchR["typename"] as? String {
+                            rTName = tname
+                        }
+                        if let icon = switchR["icon"] as? String {
+                            rIcon = icon
+                        }
+                        if let sc = switchR["systemcode"] as? String {
+                            rSC = sc
+                        }
+                        if let uc = switchR["unitcode"] as? String {
+                            rUC = Int(uc)!
+                        }
+                        
+                        
+                        let hssw = HSSwitch(id: rID, name: rName, type: rType, typename: rTName, icon: rIcon, systemcode: rSC, unitcode: rUC)
+                        
+                        arr.append(hssw)
+                    }
+                    
+                    return arr
+                }
+            } catch {
+                print("error serializing JSON: \(error)")
             }
-        } catch {
-            print("error serializing JSON: \(error)")
         }
-        
         return nil
     }
     

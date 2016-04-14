@@ -24,7 +24,7 @@ class SwitchesViewController: UIViewController {
         
         switchTable.dataSource = self
         switchTable.delegate = self
-                
+        
         switches = HSSwitch.loadSwitches()
         
         loadingActivity.alpha = 0
